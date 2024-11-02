@@ -29,8 +29,9 @@
             width: 60%;
             padding: 20px;
             align-items : center ;
-            
+            border-radius: 25px;
             background-color: #669f5266;
+            margin : 20px;
             
         }
 
