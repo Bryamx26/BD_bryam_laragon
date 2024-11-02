@@ -10,10 +10,13 @@
     <style>
         .container{
             display : flex ;
-                
-            justify-content : center ; 
-            background-color : #ffff;
+            flex-direction : column;
+            padding: 20px;
+            align-items : center ; 
+            background-color: #669f5266;
+            
         }
+
     </style>
 </head>
 <body>
@@ -21,7 +24,7 @@
   <h1> Résultat de la requête :</h1><br>
  <?php
  // Requête SQL
- $sql = "SELECT * FROM identifiant , employés WHERE id = id_user ";
+ $sql = "SELECT * FROM identifiant , employés WHERE id= 2";
  $requete = $pdo->prepare($sql);
  
  // Exécuter la requête
@@ -31,15 +34,20 @@
  $utilisateurs = $requete->fetchAll(PDO::FETCH_ASSOC);
  
  // Vérifier si un résultat est retourné
- echo "<div class='container' >";
+
  if (!empty($utilisateurs)) {
     
- 
-     // Afficher le contenu du premier utilisateur trouvé
-     foreach ($utilisateurs[0] as $cle => $valeur) {
-         echo "<strong>$cle :</strong> $valeur <br>";
-     }
-echo "</div>";
+    
+    foreach ($utilisateurs as $index => $utilisateur) {
+        echo "<div class='container' >";
+        echo "<h2>Utilisateur " . ($index + 1) . " :</h2>";
+        foreach ($utilisateur as $cle => $valeur) {
+            echo "<strong>$cle :</strong> $valeur <br>";
+        }
+        echo "</div>";
+        echo "<br>"; // Ajoute un saut de ligne entre chaque utilisateur
+
+    }
  } else {
      echo "<h1>Aucun résultat trouvé</h1>";
  }
