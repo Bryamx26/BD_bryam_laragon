@@ -42,7 +42,7 @@
   <h1> Résultat de la requête :</h1><br>
  <?php
  // Requête SQL
- $sql = "SELECT * FROM personel , poste WHERE personel.id_poste = poste.id_poste";
+ $sql = "SELECT * FROM `personel` JOIN poste ON personel.id_poste = poste.id_poste WHERE paye >650";
  $requete = $pdo->prepare($sql);
  
  // Exécuter la requête
@@ -51,6 +51,8 @@
  // Récupérer les résultats sous forme d'un tableau associatif
  $utilisateurs = $requete->fetchAll(PDO::FETCH_ASSOC);
  $nombreUtilisateurs = count($utilisateurs);
+
+ 
  // Vérifier si un résultat est retourné
 
  if (!empty($utilisateurs)) {
