@@ -10,12 +10,12 @@ trim($nom);
 $motif = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
     
 if (preg_match($motif, $_POST["mot_de_passe"]) and($_POST["mot_de_passe"] != '') ) {
-
+    
     $mot_de_passe = $_POST["mot_de_passe"];
-} else{
-    $mot_passe = FALSE;
+} else
+{
+    echo
 }
-
 
 if (isset($_POST["identifiant"])) {
     // Récupération de l'identifiant envoyé par le formulaire
@@ -51,7 +51,9 @@ if (isset($_POST["identifiant"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>interraction avec la base de données</title>
+    <link rel="stylesheet" href="css.css">
 </head>
+
 <body>
     <form id="formulaire" action="index.php" method = "post">
 
@@ -61,7 +63,7 @@ if (isset($_POST["identifiant"])) {
 
     <input type="submit" value="envoyer" name ="validation">
     </form>
-
+<section id= "reponce_sql">
 <?php
 if (isset($_POST["validation"])){
 
@@ -70,14 +72,15 @@ if (isset($_POST["identifiant"])){
     echo "Id =" . $nom ."<br>";
 
 }
-if (isset($_POST["mot_de_passe"]) and ($mot_passe == TRUE)){
-    echo "mot de passe :  = ".$_POST["mot_de_passe"];
-
-}else{
-echo"pas de mot de passe.";
+if (isset($_POST["mot_de_passe"]) and ($_POST["mot_de_passe"] != '') ){
+    echo "mot de passe :  = ".$_POST["mot_de_passe"]."<br>";
+   
+    
+} elseif ($_POST["mot_de_passe"] != '') {
+    # code...
+    echo"pas de mot de passe. <br>";
 }
-
-if (isset($resultats)) {
+if (isset($resultats) and ( !empty($resultats))) {
     echo"<section>";
     // Affichage des résultats
     foreach ($resultats as $ligne) {
@@ -91,6 +94,6 @@ if (isset($resultats)) {
 
 }
 ?>
-
+</section>
 </body>
 </html>
