@@ -14,7 +14,7 @@ if (preg_match($motif, $_POST["mot_de_passe"]) and($_POST["mot_de_passe"] != '')
     $mot_de_passe = $_POST["mot_de_passe"];
 } else
 {
-    echo
+    
 }
 
 if (isset($_POST["identifiant"])) {
