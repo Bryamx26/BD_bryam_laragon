@@ -20,15 +20,27 @@ if (preg_match($motif, $_POST["mot_de_passe"]) and($_POST["mot_de_passe"] != '')
 if (isset($_POST["identifiant"])) {
     // Récupération de l'identifiant envoyé par le formulaire
     $nom = $_POST["identifiant"];
+    $mot_de_passe = $_POST["mot_de_passe"]; 
 
     // Requête SQL pour rechercher un employé par son nom
-    $requete = "SELECT * FROM personel WHERE nom = :nom";
+    
+    $requete = "SELECT PER.nom, PAS.password
+    FROM passwords AS PAS
+    JOIN personel AS PER ON PER.nom = :nom
+    WHERE PAS.password = :pass";
+    
 
     // Préparation de la requête
     $prep = $pdo->prepare($requete);
 
     // Exécution de la requête en liant le paramètre pour éviter les injections SQL
-    $prep->execute([':nom' => $nom]);
+    // Exécution de la requête avec les paramètres sécurisés
+$prep->execute([
+    ':nom' => $nom,
+    ':pass' => $mot_de_passe
+]);
+
+                    
 
     // Récupération des résultats
     $resultats = $prep->fetchAll(PDO::FETCH_ASSOC);
@@ -36,13 +48,9 @@ if (isset($_POST["identifiant"])) {
     // Vérification s'il y a des résultats
    
 }
+}else{
+    echo"rien";
 }
-
-
-
-
-
-
 
 ?>
 <!DOCTYPE html>
@@ -51,15 +59,19 @@ if (isset($_POST["identifiant"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>interraction avec la base de données</title>
-    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="css.css?var=2">
 </head>
 
 <body>
     <form id="formulaire" action="index.php" method = "post">
 
-    Identifiant : <input type="text" name = "identifiant"> <br>
+    Identifiant : 
+<input type="text" name="identifiant" 
+    <?php echo isset($_POST['identifiant']) && !empty($_POST['identifiant']) ? "class='green'" : "class='red'"; ?>>
+<br>
 
-    mot de passe : <input type="password" name ="mot_de_passe">
+    mot de passe : <input type="password" name ="mot_de_passe"
+    <?php echo isset($_POST['mot_de_passe']) && !empty($_POST['identifiant']) ? "class='green'" : "class='red'"; ?>>
 
     <input type="submit" value="envoyer" name ="validation">
     </form>
@@ -67,24 +79,12 @@ if (isset($_POST["identifiant"])) {
 <?php
 if (isset($_POST["validation"])){
 
-    
-if (isset($_POST["identifiant"])){
-    echo "Id =" . $nom ."<br>";
 
-}
-if (isset($_POST["mot_de_passe"]) and ($_POST["mot_de_passe"] != '') ){
-    echo "mot de passe :  = ".$_POST["mot_de_passe"]."<br>";
-   
-    
-} elseif ($_POST["mot_de_passe"] != '') {
-    # code...
-    echo"pas de mot de passe. <br>";
-}
 if (isset($resultats) and ( !empty($resultats))) {
     echo"<section>";
     // Affichage des résultats
     foreach ($resultats as $ligne) {
-        echo "Nom : " . $ligne['nom'] . " - Prénom : " . $ligne['prenom'] . "<br>";
+        echo "Nom : " . $ligne['nom'] . " - mot de passe : " . $ligne['password'] . "<br>";
     }
     echo"</section>";
 } else {

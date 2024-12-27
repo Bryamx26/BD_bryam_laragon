@@ -59,3 +59,9 @@
             background-color: #45a049;
             
         }
+        .red{
+             background-color: rgba(231, 99, 99, 0.774);
+        }
+        .green{
+            background-color: rgba(110, 231, 99, 0.774);
+        }
