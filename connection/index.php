@@ -1,8 +1,10 @@
 <?php
 include "connection.php";
+session_start();
 ?>
 <?php
-if (isset($_POST["validation"])){
+
+if (isset($_POST["validation"]) AND !empty($_POST["validation"])){
     
 $nom = htmlspecialchars($_POST["identifiant"]);
 trim($nom);
@@ -14,7 +16,7 @@ if (preg_match($motif, $_POST["mot_de_passe"]) and($_POST["mot_de_passe"] != '')
     $mot_de_passe = $_POST["mot_de_passe"];
 } else
 {
-    
+  
 }
 
 if (isset($_POST["identifiant"])) {
@@ -63,6 +65,9 @@ $prep->execute([
 </head>
 
 <body>
+
+    <h1>Connexion</h1>
+
     <form id="formulaire" action="index.php" method = "post">
 
     Identifiant : 
@@ -71,7 +76,7 @@ $prep->execute([
 <br>
 
     mot de passe : <input type="password" name ="mot_de_passe"
-    <?php echo isset($_POST['mot_de_passe']) && !empty($_POST['identifiant']) ? "class='green'" : "class='red'"; ?>>
+    <?php echo isset($_POST['mot_de_passe']) && !empty($_POST['identifiant']) ? "class='green'" : "class='red' " ; ?>>
 
     <input type="submit" value="envoyer" name ="validation">
     </form>
@@ -84,11 +89,17 @@ if (isset($resultats) and ( !empty($resultats))) {
     echo"<section>";
     // Affichage des résultats
     foreach ($resultats as $ligne) {
-        echo "Nom : " . $ligne['nom'] . " - mot de passe : " . $ligne['password'] . "<br>";
+        echo "Nom : " . $ligne['nom'] . "<br> Mot de passe : " . $ligne['password'] . "<br>";
+        $_SESSION['identifiant']= $ligne['nom'] ;
+        $_SESSION['password']=$ligne['password'];
+        header('Location: page1.php');
+        exit();
     }
     echo"</section>";
+    
+
 } else {
-    echo "Aucun résultat trouvé pour cet identifiant.";
+    echo "Mauvais identifiant ou mot de passe.";
 }
 
 
